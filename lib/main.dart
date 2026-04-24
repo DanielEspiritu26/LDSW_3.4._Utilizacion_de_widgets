@@ -19,34 +19,26 @@ class Inicio extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-
-    
           Container(
             decoration: BoxDecoration(
               image: DecorationImage(
                 image: NetworkImage(
-                  'https://www.pexels.com/es-es/foto/primer-plano-de-palomitas-de-maiz-amarillas-recien-hechas-31427398/', 
+                  'https://images.pexels.com/photos/3142739/pexels-photo-3142739.jpeg',
                 ),
                 fit: BoxFit.cover,
               ),
             ),
           ),
-
           Center(
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-
-        
                 Icon(
                   Icons.movie,
                   size: 80,
                   color: Colors.white,
                 ),
-
                 SizedBox(height: 20),
-
-                
                 Text(
                   'Catálogo de Películas',
                   style: TextStyle(
@@ -55,9 +47,7 @@ class Inicio extends StatelessWidget {
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-
                 SizedBox(height: 20),
-
                 Text(
                   'Hello World',
                   style: TextStyle(
@@ -73,3 +63,4 @@ class Inicio extends StatelessWidget {
     );
   }
 }
+``

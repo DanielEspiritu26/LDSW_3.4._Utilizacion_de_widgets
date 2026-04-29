@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 void main() {
   runApp(MiApp());
@@ -8,69 +10,58 @@ class MiApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Inicio(),
+      debugShowCheckedModeBanner: false,
+      home: PantallaAPI(),
     );
   }
 }
 
-class Inicio extends StatelessWidget {
+class PantallaAPI extends StatefulWidget {
+  @override
+  _PantallaAPIState createState() => _PantallaAPIState();
+}
+
+class _PantallaAPIState extends State<PantallaAPI> {
+  String nombre = "";
+  String imagen = "";
+
+  Future<void> obtenerPokemon() async {
+    final url = Uri.parse('https://pokeapi.co/api/v2/pokemon/pikachu');
+    final respuesta = await http.get(url);
+
+    if (respuesta.statusCode == 200) {
+      final data = json.decode(respuesta.body);
+      setState(() {
+        nombre = data['name'];
+        imagen = data['sprites']['front_default'];
+      });
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerPokemon();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-
-         
-          Container(
-            decoration: BoxDecoration(
-              image: DecorationImage(
-                image: NetworkImage(
-                  'https://images.pexels.com/photos/7640049/pexels-photo-7640049.jpeg', // puedes cambiarla
-                ),
-                fit: BoxFit.cover,
-              ),
+      appBar: AppBar(title: Text("Consumo de API")),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              nombre.isEmpty ? "Cargando..." : nombre.toUpperCase(),
+              style: TextStyle(fontSize: 24),
             ),
-          ),
-
-      
-          Center(
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-
-             
-                Icon(
-                  Icons.movie,
-                  size: 80,
-                  color: Colors.black,
-                ),
-
-                SizedBox(height: 20),
-
-                
-                Text(
-                  'Catálogo de Películas',
-                  style: TextStyle(
-                    fontSize: 28,
-                    color: Colors.black,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-
-                SizedBox(height: 20),
-
-            
-                Text(
-                  'Hello World',
-                  style: TextStyle(
-                    fontSize: 22,
-                    color: Colors.black,
-                  ),
-                ),
-              ],
-            ),
-          ),
-        ],
+            SizedBox(height: 20),
+            imagen.isEmpty
+                ? CircularProgressIndicator()
+                : Image.network(imagen),
+          ],
+        ),
       ),
     );
   }

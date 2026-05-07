@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "358612909834",
+    "project_id": "catalogo-peliculas-cafe5",
+    "storage_bucket": "catalogo-peliculas-cafe5.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358612909834:android:961c1cd302a73c033904f3",
+        "android_client_info": {
+          "package_name": "com.example.hello_flutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdpxDy5CIsc7ZCpJ8wmCwtvAcxb7CWElA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

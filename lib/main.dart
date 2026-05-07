@@ -1,15 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'dart:convert';
 
-void main() {
-  runApp(MiApp());
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(const MiApp());
 }
 
 class MiApp extends StatelessWidget {
+  const MiApp({super.key});
+
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return const MaterialApp(
       debugShowCheckedModeBanner: false,
       home: PantallaAPI(),
     );
@@ -17,8 +23,10 @@ class MiApp extends StatelessWidget {
 }
 
 class PantallaAPI extends StatefulWidget {
+  const PantallaAPI({super.key});
+
   @override
-  _PantallaAPIState createState() => _PantallaAPIState();
+  State<PantallaAPI> createState() => _PantallaAPIState();
 }
 
 class _PantallaAPIState extends State<PantallaAPI> {
@@ -38,6 +46,14 @@ class _PantallaAPIState extends State<PantallaAPI> {
     }
   }
 
+  Future<void> guardarPokemon() async {
+    await FirebaseFirestore.instance.collection('pokemons').add({
+      'nombre': nombre,
+      'imagen': imagen,
+      'fecha': DateTime.now(),
+    });
+  }
+
   @override
   void initState() {
     super.initState();
@@ -47,19 +63,24 @@ class _PantallaAPIState extends State<PantallaAPI> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Consumo de API")),
+      appBar: AppBar(title: const Text("Firebase + API")),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               nombre.isEmpty ? "Cargando..." : nombre.toUpperCase(),
-              style: TextStyle(fontSize: 24),
+              style: const TextStyle(fontSize: 24),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             imagen.isEmpty
-                ? CircularProgressIndicator()
+                ? const CircularProgressIndicator()
                 : Image.network(imagen),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: nombre.isEmpty ? null : guardarPokemon,
+              child: const Text("Guardar en Firebase"),
+            ),
           ],
         ),
       ),
